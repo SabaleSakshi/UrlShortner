@@ -37,27 +37,24 @@ This project focuses on **scalability, clean architecture, and performance**, no
 - Redis (Upstash)
 
 ---
-### Work Flow
-Client
-  |
-  v
-GET /:shortCode
-  |
-  v
-Redis Cache
-  |--------------------|
-  | Cache Hit          | Cache Miss
-  v                    v
-Redirect          MongoDB Lookup
-                        |
-                        v
-                  Expiry Check
-                        |
-                        v
-                  Log Analytics
-                        |
-                        v
-                    Redirect
+## URL Shortening Flow
+
+```mermaid
+flowchart TD
+    A[Client] --> B[GET /:shortCode]
+    B --> C{Redis Cache}
+    
+    C -->|Cache Hit| D[Redirect]
+    C -->|Cache Miss| E[MongoDB Lookup]
+    E --> F{Expiry Check}
+    F -->|Valid| G[Log Analytics]
+    G --> H[Redirect]
+    F -->|Expired| I[Return 404/Error]
+    
+    style A fill:#e1f5fe
+    style D fill:#c8e6c9
+    style H fill:#c8e6c9
+    style I fill:#ffcdd2
 
 
 ---
