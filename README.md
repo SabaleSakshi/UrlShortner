@@ -36,37 +36,40 @@ This project focuses on **scalability, clean architecture, and performance**, no
 - JWT Authentication
 - Redis (Upstash)
 
----
-## URL Shortening Flow
-
-
-## Option 2: Mermaid Diagram (GitHub/GitLab supported)
-```markdown
-## URL Shortening Flow
-
-```mermaid
-flowchart TD
-    A[Client] --> B[GET /:shortCode]
-    B --> C[Redis Cache]
-    
-    C --> D{Cache Hit?}
-    D -->|Yes| E[Redirect]
-    D -->|No| F[MongoDB Lookup]
-    F --> G[Expiry Check]
-    G --> H[Log Analytics]
-    H --> I[Redirect]
-
-
----
-
-## ⚙️ Setup Instructions
+### ⚙️ Setup Instructions
 
 - Backend
-cd backend
-npm install
-npm run dev
+  - cd backend
+  - npm install
+  - npm run dev
 
 - Frontend
-cd frontend
-npm install
-npm run dev
+  - cd frontend
+  - npm install
+  - npm run dev
+
+---
+## URL Shortening Flow
+```plantuml
+@startuml
+start
+:Client;
+:GET /:shortCode;
+if (Redis Cache?) then (Cache Hit)
+  :Redirect;
+  stop
+else (Cache Miss)
+  :MongoDB Lookup;
+  if (Expiry Check?) then (Valid)
+    :Log Analytics;
+    :Redirect;
+    stop
+  else (Expired)
+    :Return 404/Error;
+    stop
+  endif
+endif
+@enduml
+
+
+
