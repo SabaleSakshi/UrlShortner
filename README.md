@@ -38,18 +38,27 @@ This project focuses on **scalability, clean architecture, and performance**, no
 
 ---
 ### Work Flow
+Client
+  |
+  v
 GET /:shortCode
-   ↓
-Redis cache lookup
-   ↓
-(Cache hit) → redirect
-(Cache miss) → MongoDB
-   ↓
-Expiry check
-   ↓
-Analytics logged
-   ↓
-Redirect to original URL
+  |
+  v
+Redis Cache
+  |--------------------|
+  | Cache Hit          | Cache Miss
+  v                    v
+Redirect          MongoDB Lookup
+                        |
+                        v
+                  Expiry Check
+                        |
+                        v
+                  Log Analytics
+                        |
+                        v
+                    Redirect
+
 
 ---
 
