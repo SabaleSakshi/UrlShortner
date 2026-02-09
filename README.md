@@ -39,22 +39,22 @@ This project focuses on **scalability, clean architecture, and performance**, no
 ---
 ## URL Shortening Flow
 
+
+## Option 2: Mermaid Diagram (GitHub/GitLab supported)
+```markdown
+## URL Shortening Flow
+
 ```mermaid
 flowchart TD
     A[Client] --> B[GET /:shortCode]
-    B --> C{Redis Cache}
+    B --> C[Redis Cache]
     
-    C -->|Cache Hit| D[Redirect]
-    C -->|Cache Miss| E[MongoDB Lookup]
-    E --> F{Expiry Check}
-    F -->|Valid| G[Log Analytics]
-    G --> H[Redirect]
-    F -->|Expired| I[Return 404/Error]
-    
-    style A fill:#e1f5fe
-    style D fill:#c8e6c9
-    style H fill:#c8e6c9
-    style I fill:#ffcdd2
+    C --> D{Cache Hit?}
+    D -->|Yes| E[Redirect]
+    D -->|No| F[MongoDB Lookup]
+    F --> G[Expiry Check]
+    G --> H[Log Analytics]
+    H --> I[Redirect]
 
 
 ---
